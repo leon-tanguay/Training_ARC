@@ -1,13 +1,21 @@
 package com.example.trainingarc.ui.workout
 
+import ExerciseAdapter
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.example.trainingarc.databinding.FragmentWorkoutBinding
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.widget.SearchView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
+import com.example.trainingarc.R
+
 
 import java.util.*
 
@@ -83,23 +91,74 @@ class WorkoutFragment : Fragment() {
             binding.finishWorkoutButton.visibility = View.GONE
         }
 
+//        binding.addExerciseButton.setOnClickListener {
+//            val workout = currentWorkout
+//            if (workout != null) {
+//                val newExercise = Exercise(
+//                    name = "Exercise ${workout.exercises.size + 1}", // temp name
+//                    sets = emptyList(),
+//                    type = "reps" // or "weight", "time" — adjust as needed
+//                )
+//
+//                // Make a mutable copy and add the new exercise
+//                val updatedList = workout.exercises.toMutableList()
+//                updatedList.add(newExercise)
+//
+//                // Replace the workout with updated one
+//                currentWorkout = workout.copy(exercises = updatedList)
+//            }
+//        }
+
         binding.addExerciseButton.setOnClickListener {
-            val workout = currentWorkout
-            if (workout != null) {
-                val newExercise = Exercise(
-                    name = "Exercise ${workout.exercises.size + 1}", // temp name
-                    sets = emptyList(),
-                    type = "reps" // or "weight", "time" — adjust as needed
-                )
+            val dialogView = layoutInflater.inflate(
+                com.example.trainingarc.R.layout.dialog_exercise_selector, null
+            )
 
-                // Make a mutable copy and add the new exercise
-                val updatedList = workout.exercises.toMutableList()
-                updatedList.add(newExercise)
+            val dialog = AlertDialog.Builder(requireContext())
+                .setView(dialogView)
+                .create()
 
-                // Replace the workout with updated one
-                currentWorkout = workout.copy(exercises = updatedList)
+            val exerciseList = listOf(
+                "Push Ups", "Squats", "Deadlift", "Plank", "Jump Rope", "Burpees", "Bench Press"
+                // Add as many as needed
+            )
+
+            val recyclerView = dialogView.findViewById<RecyclerView>(R.id.exerciseRecyclerView)
+            val searchView = dialogView.findViewById<SearchView>(R.id.searchView)
+
+            val adapter = ExerciseAdapter(exerciseList) { selected ->
+                // User selected an exercise
+                val workout = currentWorkout
+                if (workout != null) {
+                    val newExercise = Exercise(
+                        name = selected,
+                        sets = emptyList(),
+                        type = "reps"
+                    )
+                    val updatedList = workout.exercises.toMutableList()
+                    updatedList.add(newExercise)
+                    currentWorkout = workout.copy(exercises = updatedList)
+                }
+                dialog.dismiss()
             }
+
+            recyclerView.layoutManager = LinearLayoutManager(requireContext())
+            recyclerView.adapter = adapter
+
+            searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+                override fun onQueryTextSubmit(query: String?): Boolean = false
+                override fun onQueryTextChange(newText: String?): Boolean {
+                    val filtered = exerciseList.filter {
+                        it.contains(newText.orEmpty(), ignoreCase = true)
+                    }
+                    adapter.filterList(filtered)
+                    return true
+                }
+            })
+
+            dialog.show()
         }
+
 
         return root
     }
