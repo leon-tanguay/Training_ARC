@@ -15,6 +15,7 @@ import android.widget.TextView
 import android.view.ViewGroup.LayoutParams
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingarc.R
+
 import android.os.CountDownTimer
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
