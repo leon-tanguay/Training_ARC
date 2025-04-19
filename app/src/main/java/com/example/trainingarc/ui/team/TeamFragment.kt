@@ -1,6 +1,8 @@
 package com.example.trainingarc.ui.team
 
 import com.example.trainingarc.model.Teammate
+import com.example.trainingarc.model.Team
+
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -120,21 +122,25 @@ class TeamFragment : Fragment() {
         startCountdownTimer(timeLeftMillis)
 
         // Dummy data (up to 8 teammates)
-        val teammates = listOf(
-            Teammate("DownyWipe27", 5000),
-            Teammate("Mattbooties", 3000),
-            Teammate("Soren", 2000),
-            Teammate("Troy", 0),
-            Teammate("Dylan", 0)
+        val team = Team(
+            name = "Spencer's Soldiers",
+            level = 8,
+            teammates = listOf(
+                Teammate("DownyWipe27", 5000),
+                Teammate("Mattbooties", 3000),
+                Teammate("Soren", 2000),
+                Teammate("Troy", 0),
+                Teammate("Dylan", 0)
+            )
         )
 
         // Setup RecyclerView
-        val adapter = TeammateAdapter(teammates)
+        val adapter = TeammateAdapter(team.teammates)
         binding.teammateRecyclerView.adapter = adapter
         binding.teammateRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
         // Update Progress Bar
-        val totalPoints = teammates.sumOf { it.points }
+        val totalPoints = team.teammates.sumOf { it.points }
         val maxPoints = 50000
         binding.progressBar.max = maxPoints
         binding.progressBar.progress = totalPoints
