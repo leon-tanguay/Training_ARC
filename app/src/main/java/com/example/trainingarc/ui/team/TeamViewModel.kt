@@ -1,4 +1,4 @@
-package com.example.trainingarc.ui.profile
+package com.example.trainingarc.ui.team
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
