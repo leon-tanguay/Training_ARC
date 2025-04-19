@@ -1,24 +1,83 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.team.TeamFragment">
+    android:padding="16dp">
 
-    <TextView
-        android:id="@+id/text_team"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:textAlignment="center"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.596" />
-</androidx.constraintlayout.widget.ConstraintLayout>
+        android:orientation="vertical"
+        android:gravity="center_horizontal">
+
+        <!-- Team Title -->
+        <TextView
+            android:id="@+id/teamName"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/spencer_s_soldiers"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <!-- Dinosaur Box -->
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:background="@drawable/box_background"
+            android:layout_marginTop="8dp">
+
+            <!-- Dinosaur Image -->
+            <ImageView
+                android:id="@+id/dinoImage"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:src="@drawable/ic_dinosaur"
+                android:contentDescription="Dinosaur Icon" />
+
+            <!-- Timer -->
+            <TextView
+                android:id="@+id/timerText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="5:23:11"
+                android:textSize="18sp"
+                android:gravity="center_horizontal" />
+
+            <!-- Progress Info -->
+            <TextView
+                android:id="@+id/progressLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30,000 / 50,000"
+                android:layout_marginTop="4dp" />
+
+            <!-- Progress Bar -->
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:progress="60"
+                android:max="100" />
+        </LinearLayout>
+
+        <!-- Team Name -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Spencer's Soldiers ⭐"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:layout_marginTop="12dp" />
+
+        <!-- Score Table -->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/teammateRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            />
+    </LinearLayout>
+</ScrollView>
