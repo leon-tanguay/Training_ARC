@@ -1,4 +1,4 @@
-package com.example.trainingarc.ui.profile
+package com.example.trainingarc.ui.team
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,11 +7,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.example.trainingarc.databinding.FragmentProfileBinding
+import com.example.trainingarc.databinding.FragmentTeamBinding
 
-class ProfileFragment : Fragment() {
+class TeamFragment : Fragment() {
 
-    private var _binding: FragmentProfileBinding? = null
+    private var _binding: FragmentTeamBinding? = null
 
     // This property is only valid between onCreateView and
     // onDestroyView.
@@ -23,12 +23,12 @@ class ProfileFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         val profileViewModel =
-            ViewModelProvider(this).get(ProfileViewModel::class.java)
+            ViewModelProvider(this).get(TeamViewModel::class.java)
 
-        _binding = FragmentProfileBinding.inflate(inflater, container, false)
+        _binding = FragmentTeamBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
-        val textView: TextView = binding.textProfile
+        val textView: TextView = binding.textTeam
         profileViewModel.text.observe(viewLifecycleOwner) {
             textView.text = it
         }
