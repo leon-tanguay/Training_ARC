@@ -1,83 +1,110 @@
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp">
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
 
+    <!-- Team Title -->
     <LinearLayout
-        android:layout_width="match_parent"
+        android:id="@+id/teamHeader"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:gravity="center_horizontal">
+        android:orientation="horizontal"
+        android:layout_marginTop="12dp"
+        android:gravity="center_vertical">
 
-        <!-- Team Title -->
         <TextView
             android:id="@+id/teamName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/spencer_s_soldiers"
-            android:textSize="20sp"
+            android:text="Team Name Here"
+            android:textSize="@dimen/title_font_size"
             android:textStyle="bold"
-            android:layout_marginTop="12dp" />
+            android:layout_marginEnd="8dp" />
 
-        <!-- Dinosaur Box -->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:background="@drawable/box_background"
-            android:layout_marginTop="8dp">
+        <FrameLayout
+            android:layout_width="@dimen/title_icon_size"
+            android:layout_height="@dimen/title_icon_size">
 
-            <!-- Dinosaur Image -->
             <ImageView
-                android:id="@+id/dinoImage"
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:src="@drawable/ic_dinosaur"
-                android:contentDescription="Dinosaur Icon" />
+                android:id="@+id/starIcon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:src="@drawable/level_icon_24dp"
+                android:contentDescription="Team Level Star" />
 
-            <!-- Timer -->
             <TextView
-                android:id="@+id/timerText"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="5:23:11"
-                android:textSize="18sp"
-                android:gravity="center_horizontal" />
+                android:id="@+id/teamLevel"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="5"
+                android:textSize="@dimen/level_font_size"
+                android:gravity="center"
+                android:textColor="@android:color/black"
+                android:textStyle="bold" />
+        </FrameLayout>
+    </LinearLayout>
 
-            <!-- Progress Info -->
-            <TextView
-                android:id="@+id/progressLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="30,000 / 50,000"
-                android:layout_marginTop="4dp" />
+    <!-- Dinosaur Box: 35% of screen height -->
+    <LinearLayout
+        android:id="@+id/dinoBox"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.35"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:background="@drawable/box_background"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:layout_marginHorizontal="24dp">
 
-            <!-- Progress Bar -->
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:progress="60"
-                android:max="100" />
-        </LinearLayout>
+        <!-- 🦖 Bigger Dino Image -->
+        <ImageView
+            android:id="@+id/dinoImage"
+            android:layout_width="180dp"
+            android:layout_height="180dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="4dp"
+            android:src="@drawable/ic_dinosaur"
+            android:scaleType="fitCenter" />
 
-        <!-- Team Name -->
+        <!-- ⏱ Timer -->
         <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Spencer's Soldiers ⭐"
-            android:textSize="20sp"
-            android:textStyle="bold"
-            android:layout_marginTop="12dp" />
-
-        <!-- Score Table -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/teammateRecyclerView"
+            android:id="@+id/timerText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            />
+            android:text="Loading..."
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="6dp" /> <!-- Added space below timer -->
+
+        <!-- 📊 Progress Info -->
+        <TextView
+            android:id="@+id/progressLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30,000 / 50,000"
+            android:layout_marginBottom="2dp" />
+
+        <!-- 📈 Progress Bar with minimal space below -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progress="60"
+            android:max="100"
+            android:layout_marginBottom="0dp" />
     </LinearLayout>
-</ScrollView>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/teammateRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.5"
+        android:layout_marginTop="12dp" />
+
+</LinearLayout>
