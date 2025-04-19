@@ -27,9 +27,9 @@ data class Exercise(
 
             return when {
                 bestSet == null -> "No sets"
-                bestSet.addedWeight > 0 -> """Best Set: "${bestSet.addedWeight} x ${bestSet.reps}""""
-                bestSet.reps > 0 -> """Best Set: "${bestSet.reps} reps""""
-                else -> """Best Set: "${bestSet.time} sec""""
+                bestSet.addedWeight > 0 -> """"${bestSet.addedWeight} x ${bestSet.reps}""""
+                bestSet.reps > 0 -> """"${bestSet.reps} reps""""
+                else -> """"${bestSet.time} sec""""
             }
         }
 
