@@ -21,6 +21,7 @@ import java.util.Calendar
 import java.util.concurrent.TimeUnit
 import androidx.core.content.ContextCompat
 import androidx.annotation.ColorRes
+import androidx.appcompat.app.AppCompatActivity
 
 
 // Adapter for the RecyclerView
@@ -150,8 +151,11 @@ class TeamFragment : Fragment() {
         // Set other static content
         binding.teamName.text = "Team"
         binding.teamName.text = "Spencer's Soldiers"
-        val teamLevel = 8 // 🔁 You can change this later
+        val teamLevel = 8
         binding.teamLevel.text = teamLevel.toString()
+
+        // ✅ Hide the back arrow
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         return root
     }
