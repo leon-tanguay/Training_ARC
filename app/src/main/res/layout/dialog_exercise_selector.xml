@@ -3,16 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
+    android:fontFamily="@font/chakrapetchregular"
     android:padding="16dp">
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/chakrapetchregular"
         android:queryHint="Search exercises..." />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exerciseRecyclerView"
         android:layout_width="match_parent"
+        android:fontFamily="@font/chakrapetchregular"
         android:layout_height="400dp" />
 </LinearLayout>

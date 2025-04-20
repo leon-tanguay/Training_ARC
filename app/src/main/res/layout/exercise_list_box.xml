@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Exercise Name"
         android:textStyle="bold"
+        android:fontFamily="@font/chakrapetchregular"
         android:textSize="18sp"
         android:layout_marginBottom="8dp"/>
 
@@ -21,6 +22,7 @@
         android:id="@+id/setContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:fontFamily="@font/chakrapetchregular"
         android:orientation="vertical" />
 
     <!-- Add Set Button -->
@@ -29,5 +31,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Add Set"
+        android:fontFamily="@font/chakrapetchregular"
         android:layout_marginTop="8dp" />
 </LinearLayout>
