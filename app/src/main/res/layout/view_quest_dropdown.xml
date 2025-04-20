@@ -10,7 +10,7 @@
     <LinearLayout
         android:id="@+id/questListContainer"
         android:layout_width="wrap_content"
-        android:layout_height="240dp"
+        android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@android:color/white"
         android:elevation="8dp"
@@ -19,9 +19,7 @@
         android:layout_marginTop="80dp"
         android:layout_marginEnd="16dp"
         android:backgroundTint="@android:color/white"
-        android:backgroundTintMode="src_in">
-
-        <!-- We’ll add quest items dynamically here -->
+        android:backgroundTintMode="src_in" >
 
     </LinearLayout>
 </FrameLayout>

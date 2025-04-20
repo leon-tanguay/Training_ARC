@@ -1,6 +1,7 @@
 package com.example.trainingarc
 
 import android.os.Bundle
+import android.widget.CheckBox
 import android.os.CountDownTimer
 import android.util.Log
 import android.view.View
@@ -29,6 +30,29 @@ class MainActivity : AppCompatActivity() {
     private var weeklyTimer: CountDownTimer? = null
     private lateinit var dailyHeader: TextView
     private lateinit var weeklyHeader: TextView
+
+    private val questCompletionMap = mutableMapOf<String, Boolean>()
+
+    private val allDailyQuests = listOf(
+        "Stretch - quick 15 minute stretch",
+        "Superset - a little extra push after a big effort",
+        "Friendly - interact with a friend’s workout",
+        "Mental reset - meditate for 5 minutes",
+        "Treasure hunt - try new exercise not tried before",
+        "Take a walk - 15 minute outdoor walk free from distractions",
+        "Band together - use resistance bands in today’s workout",
+        "1% better - add a unit to any one workout"
+    )
+
+    private val allWeeklyQuests = listOf(
+        "All rounder - hit every muscle in a week",
+        "Sporty - play a sport",
+        "Level up - improve an exercise (time/rep/weight)",
+        "Squad up - workout with a teammate",
+        "Core crusher - hit core 3 times in a week",
+        "Stretch sage - follow 10 minute flexibility video on youtube",
+        "Mat master - complete a workout on a mat"
+    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -111,6 +135,8 @@ class MainActivity : AppCompatActivity() {
         dailyTimer?.cancel()
         weeklyTimer?.cancel()
 
+
+
         // Daily countdown header (omit '0d ' when less than a day)
         val initialDayMs = getMillisUntilEndOfDay()
         dailyHeader = TextView(this).apply {
@@ -121,15 +147,18 @@ class MainActivity : AppCompatActivity() {
         }
         questListContainer.addView(dailyHeader)
 
-        // Three daily quests
+        // Fixed daily quests
         val dailyQuests = listOf(
-            "🏋️ Do 20 push‑ups",
-            "💧 Drink 2L of water",
-            "🚶 Take a 30‑minute walk"
+            "🏋️ Go to the gym",
+            "🏃 Cardio",
+            "🎯 " + getTodayDailyQuest()
         )
-        dailyQuests.forEach { q ->
-            questListContainer.addView(createQuestView(q))
+
+        dailyQuests.forEach { quest ->
+            questListContainer.addView(createQuestView(quest))
         }
+
+
 
         // Weekly countdown header (show days always)
         val initialWeekMs = getMillisUntilEndOfWeek()
@@ -141,15 +170,10 @@ class MainActivity : AppCompatActivity() {
         }
         questListContainer.addView(weeklyHeader)
 
-        // Three weekly quests
-        val weeklyQuests = listOf(
-            "🏅 Complete 3 strength workouts",
-            "🥗 Eat 5 servings of vegetables",
-            "🛌 Get 7 hours of sleep each night"
-        )
-        weeklyQuests.forEach { q ->
-            questListContainer.addView(createQuestView(q))
-        }
+        // Randomized weekly quests
+        val thisWeekQuest = getThisWeekWeeklyQuest()
+        questListContainer.addView(createQuestView(thisWeekQuest))
+
 
         // Start timers
         dailyTimer = object : CountDownTimer(initialDayMs, 1000) {
@@ -171,15 +195,52 @@ class MainActivity : AppCompatActivity() {
         }.start()
     }
 
-    private fun createQuestView(text: String): TextView = TextView(this).apply {
-        this.text = text
-        setPadding(24, 16, 24, 16)
-        textSize = 16f
-        setTextColor(ContextCompat.getColor(context, android.R.color.black))
-        background = ContextCompat.getDrawable(
-            context, android.R.drawable.dialog_holo_light_frame
-        )
+    private fun createQuestView(text: String): LinearLayout {
+        val container = LinearLayout(this).apply {
+            orientation = LinearLayout.HORIZONTAL
+            setPadding(16, 12, 16, 12)
+            background = ContextCompat.getDrawable(
+                context, android.R.drawable.dialog_holo_light_frame
+            )
+        }
+
+        val checkBox = CheckBox(this).apply {
+            isChecked = questCompletionMap[text] ?: false
+            setOnCheckedChangeListener { _, isChecked ->
+                questCompletionMap[text] = isChecked
+            }
+            setPadding(0, 0, 16, 0)
+        }
+
+        val textView = TextView(this).apply {
+            this.text = text
+            textSize = 16f
+            setTextColor(ContextCompat.getColor(context, android.R.color.black))
+        }
+
+        container.addView(checkBox)
+        container.addView(textView)
+
+        return container
     }
+
+
+
+    private fun getTodayDailyQuest(): String {
+        val calendar = Calendar.getInstance()
+        val seed = calendar.get(Calendar.DAY_OF_YEAR) + calendar.get(Calendar.YEAR)
+        val random = java.util.Random(seed.toLong())
+        return allDailyQuests.shuffled(random).first()
+    }
+
+    private fun getThisWeekWeeklyQuest(): String {
+        val calendar = Calendar.getInstance()
+        val seed = calendar.get(Calendar.WEEK_OF_YEAR) + calendar.get(Calendar.YEAR)
+        val random = java.util.Random(seed.toLong())
+        return allWeeklyQuests.shuffled(random).first()
+    }
+
+
 
     override fun onDestroy() {
         super.onDestroy()
