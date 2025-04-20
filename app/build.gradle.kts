@@ -47,7 +47,9 @@ android {
 dependencies {
     val room_version = "2.6.1"
     implementation("com.google.code.gson:gson:2.10.1") // or latest version
-
+    implementation(platform("com.google.firebase:firebase-bom:33.12.0"))
+    implementation("com.google.firebase:firebase-auth")
+    implementation("com.google.firebase:firebase-firestore")
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     implementation("androidx.core:core-ktx:1.12.0")
