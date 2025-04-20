@@ -3,6 +3,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
+import androidx.core.content.res.ResourcesCompat
+import com.example.trainingarc.R
+
 
 class ExerciseAdapter(
     private var exercises: List<String>,
@@ -21,6 +24,10 @@ class ExerciseAdapter(
 
     override fun onBindViewHolder(holder: ExerciseViewHolder, position: Int) {
         holder.label.text = exercises[position]
+
+        val customFont = ResourcesCompat.getFont(holder.itemView.context, R.font.chakrapetchregular)
+        holder.label.typeface = customFont
+
         holder.itemView.setOnClickListener {
             onClick(exercises[position])
         }
