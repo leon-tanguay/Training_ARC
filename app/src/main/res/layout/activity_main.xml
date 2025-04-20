@@ -14,7 +14,7 @@
         android:background="#C7BAB9"
         android:title="Training Arc"
         android:titleTextColor="#434343"
-        android:fontFamily="@font/baskervilleregular"
+        android:fontFamily="@font/akira"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -57,7 +57,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@android:color/transparent"
-            android:fontFamily="@font/baskervilleregular"
+            android:fontFamily="@font/akira"
             app:menu="@menu/bottom_nav_menu" />
     </FrameLayout>
 

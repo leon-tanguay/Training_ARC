@@ -33,7 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="Username"
                 android:textSize="26sp"
-                android:fontFamily="@font/baskervilleregular"
+                android:fontFamily="@font/akira"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
                 android:layout_marginBottom="4dp" />
@@ -43,7 +43,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Team Name"
-                android:fontFamily="@font/baskervilleregular"
+                android:fontFamily="@font/akira"
                 android:textSize="18sp"
                 android:textColor="@android:color/holo_blue_light"
                 android:layout_marginBottom="16dp" />
@@ -64,7 +64,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Level 1"
-                android:fontFamily="@font/baskervilleregular"
+                android:fontFamily="@font/akira"
                 android:textSize="22sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
