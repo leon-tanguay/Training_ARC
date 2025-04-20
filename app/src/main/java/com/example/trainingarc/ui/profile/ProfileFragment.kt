@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.example.trainingarc.databinding.FragmentProfileBinding
@@ -36,6 +37,9 @@ class ProfileFragment : Fragment() {
                 binding.badge3.setImageResource(profile.badges[2])
             }
         }
+
+        // ✅ Hide the back arrow
+        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
 
         return root
     }
