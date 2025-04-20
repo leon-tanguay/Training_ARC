@@ -22,7 +22,6 @@ import java.util.concurrent.TimeUnit
 import androidx.core.content.ContextCompat
 import androidx.annotation.ColorRes
 
-
 // Adapter for the RecyclerView
 class TeammateAdapter(private val teammates: List<Teammate>) :
     RecyclerView.Adapter<TeammateAdapter.ViewHolder>() {
