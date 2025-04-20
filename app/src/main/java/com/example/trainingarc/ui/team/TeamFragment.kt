@@ -1,7 +1,9 @@
 package com.example.trainingarc.ui.team
 
+import android.content.Context
 import com.example.trainingarc.model.Teammate
 import com.example.trainingarc.model.Team
+import androidx.lifecycle.Observer
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -22,6 +24,7 @@ import java.util.concurrent.TimeUnit
 import androidx.core.content.ContextCompat
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
+import com.example.trainingarc.model.AppDatabase
 
 // Adapter for the RecyclerView
 class TeammateAdapter(private val teammates: List<Teammate>) :
@@ -51,6 +54,7 @@ class TeamFragment : Fragment() {
 
     private var _binding: FragmentTeamBinding? = null
     private val binding get() = _binding!!
+    private lateinit var teamViewModel: TeamViewModel
     private var countdownTimer: CountDownTimer? = null
     private fun getMillisUntilEndOfWeek(): Long {
         val calendar = Calendar.getInstance()
@@ -107,56 +111,116 @@ class TeamFragment : Fragment() {
         }.start()
     }
 
-
-
     override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
+        inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-
-    ): View {
-        val teamViewModel = ViewModelProvider(this).get(TeamViewModel::class.java)
+    ): View? {
+        teamViewModel = ViewModelProvider(this).get(TeamViewModel::class.java)
         _binding = FragmentTeamBinding.inflate(inflater, container, false)
         val root: View = binding.root
 
+        // Get time left until end of the week and start the countdown
         val timeLeftMillis = getMillisUntilEndOfWeek()
         startCountdownTimer(timeLeftMillis)
 
-        // Dummy data (up to 8 teammates)
-        val team = Team(
-            name = "Spencer's Soldiers",
-            level = 8,
-            teammates = listOf(
-                Teammate("DownyWipe27", 5000),
-                Teammate("Mattbooties", 3000),
-                Teammate("Soren", 2000),
-                Teammate("Troy", 0),
-                Teammate("Dylan", 0)
+        // Get userId from SharedPreferences
+        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val userId = prefs.getInt("logged_in_user_id", -1)
+
+        // Fetch user data asynchronously
+        teamViewModel.getUser(userId)
+
+        // Observe LiveData for user data
+        teamViewModel.user.observe(viewLifecycleOwner, Observer { user ->
+            // Handle the user data here
+            val userWeeklyPoints = user.pointsThisWeek
+
+            // Dummy data for the team
+            val team = Team(
+                name = "Spencer's Soldiers",
+                level = 8,
+                teammates = listOf(
+                    Teammate("DownyWipe27", 500),
+                    Teammate("Mattbooties", 300),
+                    Teammate("Soren", 230),
+                    Teammate("Troy", 0),
+                    Teammate("Dylan", 0)
+                )
             )
-        )
 
-        // Setup RecyclerView
-        val adapter = TeammateAdapter(team.teammates)
-        binding.teammateRecyclerView.adapter = adapter
-        binding.teammateRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+            // Add the user to the list of teammates
+            val allTeammates = team.teammates + Teammate(user.username, userWeeklyPoints)
 
-        // Update Progress Bar
-        val totalPoints = team.teammates.sumOf { it.points }
-        val maxPoints = 50000
-        binding.progressBar.max = maxPoints
-        binding.progressBar.progress = totalPoints
-        binding.progressLabel.text = "$totalPoints / $maxPoints"
+            // Sort teammates by points (descending order)
+            val sortedTeammates = allTeammates.sortedByDescending { it.points }
 
-        // Set other static content
-        binding.teamName.text = "Team"
-        binding.teamName.text = "Spencer's Soldiers"
-        val teamLevel = 8
-        binding.teamLevel.text = teamLevel.toString()
+            // Setup RecyclerView
+            val adapter = TeammateAdapter(sortedTeammates)
+            binding.teammateRecyclerView.adapter = adapter
+            binding.teammateRecyclerView.layoutManager = LinearLayoutManager(requireContext())
 
-        // ✅ Hide the back arrow
-        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
+            // Update Progress Bar
+            val totalPoints = allTeammates.sumOf { it.points }
+            val maxPoints = 50000 // Max points, can be dynamically adjusted if needed
+            binding.progressBar.max = maxPoints
+            binding.progressBar.progress = totalPoints
+            binding.progressLabel.text = "$totalPoints / $maxPoints"
+
+            // Set other static content
+            binding.teamName.text = team.name
+            binding.teamLevel.text = team.level.toString()
+        })
 
         return root
+    }
+
+    fun refreshTeamData() {
+        // Get userId from SharedPreferences
+        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+        val userId = prefs.getInt("logged_in_user_id", -1)
+
+        // Fetch the updated user data asynchronously
+        teamViewModel.getUser(userId)
+
+        // Observe LiveData for user data
+        teamViewModel.user.observe(viewLifecycleOwner, Observer { user ->
+            val userWeeklyPoints = user.pointsThisWeek
+
+            // Dummy data for the team
+            val team = Team(
+                name = "Spencer's Soldiers",
+                level = 8,
+                teammates = listOf(
+                    Teammate("DownyWipe27", 500),
+                    Teammate("Mattbooties", 300),
+                    Teammate("Soren", 200),
+                    Teammate("Troy", 0),
+                    Teammate("Dylan", 0)
+                )
+            )
+
+            // Add the user to the list of teammates
+            val allTeammates = team.teammates + Teammate(user.username, userWeeklyPoints)
+
+            // Sort teammates by points (descending order)
+            val sortedTeammates = allTeammates.sortedByDescending { it.points }
+
+            // Setup RecyclerView
+            val adapter = TeammateAdapter(sortedTeammates)
+            binding.teammateRecyclerView.adapter = adapter
+            binding.teammateRecyclerView.layoutManager = LinearLayoutManager(requireContext())
+
+            // Update Progress Bar
+            val totalPoints = allTeammates.sumOf { it.points }
+            val maxPoints = 50000
+            binding.progressBar.max = maxPoints
+            binding.progressBar.progress = totalPoints
+            binding.progressLabel.text = "$totalPoints / $maxPoints"
+
+            // Set other static content
+            binding.teamName.text = team.name
+            binding.teamLevel.text = team.level.toString()
+        })
     }
 
     override fun onDestroyView() {

@@ -1,179 +1,173 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:gravity="center_horizontal">
 
-    <!-- 🖼 Fullscreen boss background image -->
-    <ImageView
-        android:id="@+id/backgroundImage"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:scaleType="centerCrop"
-        android:src="@drawable/bossbackground"
-        android:contentDescription="Boss Background" />
+    <!-- 🏁 Team Header Banner -->
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp"
+        android:elevation="2dp">
 
-    <!-- 📦 Foreground content -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="16dp"
-        android:gravity="center_horizontal"
-        android:background="@android:color/transparent">
-
-        <!-- 🏁 Team Header Banner -->
-        <FrameLayout
+        <!-- Banner Background Image -->
+        <ImageView
+            android:id="@+id/teamBanner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:elevation="2dp">
+            android:layout_marginTop="5dp"
+            android:src="@drawable/bannerclan2"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            android:contentDescription="Team Banner" />
 
-            <ImageView
-                android:id="@+id/teamBanner"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
-                android:src="@drawable/bannerclan2"
-                android:adjustViewBounds="true"
-                android:scaleType="fitCenter"
-                android:contentDescription="Team Banner" />
+        <!-- Foreground: Team Name + Level inside the banner -->
+        <LinearLayout
+            android:id="@+id/teamHeader"
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:orientation="vertical"
+            android:layout_gravity="center">
 
-            <LinearLayout
-                android:id="@+id/teamHeader"
+            <!-- Top spacer (more space above) -->
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="140dp"
-                android:orientation="vertical"
-                android:layout_gravity="center">
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-                <!-- Top spacer -->
+            <!-- Centered horizontal content -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingStart="24dp"
+                android:paddingEnd="24dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp"
+                android:gravity="center">
+
+                <!-- Left spacer -->
                 <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
                     android:layout_weight="1" />
 
-                <!-- Centered row -->
+                <!-- Team name and level -->
                 <LinearLayout
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:paddingStart="24dp"
-                    android:paddingEnd="24dp"
-                    android:paddingTop="8dp"
-                    android:paddingBottom="8dp"
-                    android:gravity="center">
+                    android:orientation="horizontal">
 
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
-
-                    <LinearLayout
+                    <TextView
+                        android:id="@+id/teamName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:text="Team Name Here"
+                        android:textSize="20sp"
+                        android:fontFamily="@font/baskervilleregular"
+                        android:textStyle="bold"
+                        android:textColor="#333333"
+                        android:layout_marginEnd="8dp" />
+
+                    <FrameLayout
+                        android:layout_width="@dimen/title_icon_size"
+                        android:layout_height="@dimen/title_icon_size">
+
+                        <ImageView
+                            android:id="@+id/starIcon"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:src="@drawable/level_icon_24dp"
+                            android:contentDescription="Team Level Star" />
 
                         <TextView
-                            android:id="@+id/teamName"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Team Name Here"
+                            android:id="@+id/teamLevel"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="5"
                             android:textSize="20sp"
-                            android:fontFamily="@font/baskervilleregular"
-                            android:textStyle="bold"
-                            android:textColor="#333333"
-                            android:layout_marginEnd="8dp" />
-
-                        <FrameLayout
-                            android:layout_width="@dimen/title_icon_size"
-                            android:layout_height="@dimen/title_icon_size">
-
-                            <ImageView
-                                android:id="@+id/starIcon"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:src="@drawable/level_icon_24dp"
-                                android:contentDescription="Team Level Star" />
-
-                            <TextView
-                                android:id="@+id/teamLevel"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:text="5"
-                                android:textSize="20sp"
-                                android:gravity="center"
-                                android:textColor="@android:color/black"
-                                android:textStyle="bold" />
-                        </FrameLayout>
-                    </LinearLayout>
-
-                    <View
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1" />
+                            android:gravity="center"
+                            android:textColor="@android:color/black"
+                            android:textStyle="bold" />
+                    </FrameLayout>
                 </LinearLayout>
 
-                <!-- Bottom spacer (more space) -->
+                <!-- Right spacer -->
                 <View
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="3" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
             </LinearLayout>
-        </FrameLayout>
 
-        <!-- 🦖 Boss Section -->
-        <LinearLayout
-            android:id="@+id/dinoBox"
-            android:layout_width="match_parent"
-            android:layout_height="320dp"
-            android:layout_weight="5"
-            android:orientation="vertical"
-            android:padding="12dp"
-            android:background="@drawable/box_background"
-            android:layout_marginTop="-90dp"
-            android:gravity="center"
-            android:layout_marginHorizontal="24dp"
-            android:elevation="0dp">
-
-            <ImageView
-                android:id="@+id/dinoImage"
-                android:layout_width="240dp"
-                android:layout_height="240dp"
-                android:layout_gravity="center"
-                android:layout_marginBottom="0dp"
-                android:src="@drawable/bossdragon"
-                android:scaleType="fitCenter" />
-
-            <TextView
-                android:id="@+id/timerText"
+            <!-- Bottom spacer (less space below) -->
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Loading..."
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:gravity="center"
-                android:layout_marginBottom="6dp" />
-
-            <TextView
-                android:id="@+id/progressLabel"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="30,000 / 50,000"
-                android:layout_marginBottom="2dp" />
-
-            <ProgressBar
-                android:id="@+id/progressBar"
-                android:layout_width="200dp"
-                android:layout_height="wrap_content"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:progress="60"
-                android:max="100"
-                android:layout_marginBottom="0dp" />
+                android:layout_height="0dp"
+                android:layout_weight="9" />
         </LinearLayout>
+    </FrameLayout>
 
-        <!-- Teammates RecyclerView -->
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/teammateRecyclerView"
+
+    <!-- Dinosaur Box: Taller to show statistics -->
+    <LinearLayout
+        android:id="@+id/dinoBox"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_weight="5"
+        android:orientation="vertical"
+        android:padding="12dp"
+        android:background="@drawable/box_background"
+        android:layout_marginTop="-90dp"
+        android:gravity="center"
+        android:layout_marginHorizontal="24dp"
+        android:elevation="0dp">
+
+        <!-- 🦖 Bigger Dino Image (with overlap) -->
+        <ImageView
+            android:id="@+id/dinoImage"
+            android:layout_width="240dp"
+            android:layout_height="240dp"
+            android:layout_gravity="center"
+            android:layout_marginBottom="0dp"
+            android:src="@drawable/bossdragon"
+            android:scaleType="fitCenter" />
+
+        <!-- ⏱ Timer -->
+        <TextView
+            android:id="@+id/timerText"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:layout_marginTop="12dp" />
+            android:layout_height="wrap_content"
+            android:text="Loading..."
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginBottom="6dp" /> <!-- Added space below timer -->
+
+        <!-- 📊 Progress Info -->
+        <TextView
+            android:id="@+id/progressLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="30,000 / 50,000"
+            android:layout_marginBottom="2dp" />
+
+        <!-- 📈 Progress Bar with minimal space below -->
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:progress="60"
+            android:max="100"
+            android:layout_marginBottom="0dp" />
     </LinearLayout>
-</FrameLayout>
+
+    <!-- RecyclerView -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/teammateRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="12dp" />
+</LinearLayout>

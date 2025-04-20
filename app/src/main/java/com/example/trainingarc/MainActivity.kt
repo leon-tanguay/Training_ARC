@@ -89,6 +89,9 @@ class MainActivity : AppCompatActivity() {
                     if (currentFragment is com.example.trainingarc.ui.profile.ProfileFragment) {
                         currentFragment.refreshProfile()
                     }
+                    else if (currentFragment is com.example.trainingarc.ui.team.TeamFragment) {
+                        currentFragment.refreshTeamData()
+                    }
                 }
             }
         }.start()
