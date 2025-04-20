@@ -11,6 +11,7 @@ import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import com.example.trainingarc.databinding.ActivityMainBinding
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
@@ -248,44 +249,54 @@ class MainActivity : AppCompatActivity() {
             background = ContextCompat.getDrawable(
                 context, android.R.drawable.dialog_holo_light_frame
             )
+            isClickable = true
+            isFocusable = true
         }
 
         val checkBox = CheckBox(this).apply {
             isChecked = questCompletionMap[text] ?: false
-            setOnCheckedChangeListener { _, isChecked ->
-                questCompletionMap[text] = isChecked
-
-                if (isChecked) {
-                    val lowerText = text.lowercase()
-                    val isDaily = allDailyQuests.any { lowerText.contains(it.lowercase()) } || lowerText.contains("go to the gym") || lowerText.contains("cardio")
-                    val isWeekly = allWeeklyQuests.any { lowerText.contains(it.lowercase()) }
-
-                    val pointsToAdd = when {
-                        isDaily -> 10
-                        isWeekly -> 50
-                        else -> 0
-                    }
-
-                    if (pointsToAdd > 0) {
-                        updateUserPoints(pointsToAdd)
-                    }
-                }
-            }
+            isEnabled = false // Don't allow direct clicking — we control it from the container
             setPadding(0, 0, 16, 0)
         }
+
+        val customFont = ResourcesCompat.getFont(this, R.font.baskervilleregular)
 
         val textView = TextView(this).apply {
             this.text = text
             textSize = 16f
+            typeface = customFont
             setTextColor(ContextCompat.getColor(context, android.R.color.black))
         }
 
         container.addView(checkBox)
         container.addView(textView)
 
+        container.setOnClickListener {
+            val current = questCompletionMap[text] ?: false
+            val newValue = !current
+            questCompletionMap[text] = newValue
+            checkBox.isChecked = newValue
+
+            if (newValue) {
+                val lowerText = text.lowercase()
+                val isDaily = allDailyQuests.any { lowerText.contains(it.lowercase()) } ||
+                        lowerText.contains("go to the gym") || lowerText.contains("cardio")
+                val isWeekly = allWeeklyQuests.any { lowerText.contains(it.lowercase()) }
+
+                val pointsToAdd = when {
+                    isDaily -> 10
+                    isWeekly -> 50
+                    else -> 0
+                }
+
+                if (pointsToAdd > 0) {
+                    updateUserPoints(pointsToAdd)
+                }
+            }
+        }
+
         return container
     }
-
 
 
     private fun getTodayDailyQuest(): String {
