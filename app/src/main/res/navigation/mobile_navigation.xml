@@ -30,8 +30,8 @@
         tools:layout="@layout/fragment_team" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
+        android:id="@+id/navigation_history"
         android:name="com.example.trainingarc.ui.history.HistoryFragment"
-        android:label="@string/title_notifications"
+        android:label="@string/title_history"
         tools:layout="@layout/fragment_history" />
 </navigation>
