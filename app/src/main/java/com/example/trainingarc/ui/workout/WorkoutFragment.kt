@@ -20,12 +20,16 @@ import android.widget.TextView
 import android.widget.LinearLayout
 import android.widget.EditText
 import android.widget.ImageView
+import kotlin.concurrent.thread
+import android.content.Context
 
 import android.util.Log
 
 import java.util.*
+import com.example.trainingarc.model.AppDatabase
 
 import com.example.trainingarc.model.Exercise
+import com.example.trainingarc.model.Profile
 import com.example.trainingarc.model.Set
 import com.example.trainingarc.model.Workout
 
@@ -58,6 +62,9 @@ class WorkoutFragment : Fragment() {
         _binding = FragmentWorkoutBinding.inflate(inflater, container, false)
         val root = binding.root
 
+        val testPerson = Profile("greg", "gregs g's",
+            25, 4, emptyList())
+
         binding.addWorkoutButton.setOnClickListener {
             val now = Calendar.getInstance()
             val hour = now.get(Calendar.HOUR_OF_DAY)
@@ -66,7 +73,7 @@ class WorkoutFragment : Fragment() {
             // Create the new workout instance
             currentWorkout = Workout(
                 workoutName = "Workout at ${"%02d".format(hour)}:${"%02d".format(minute)}",
-                username = "demoUser",
+                userId = -1, // placeholder; will be replaced later when saving
                 hourOf = hour,
                 minuteOf = minute,
                 exercises = emptyList()
@@ -165,23 +172,54 @@ class WorkoutFragment : Fragment() {
 
             // ✅ Print everything
             currentWorkout?.let { workout ->
-                Log.d("WorkoutDebug", "Workout Name: ${workout.workoutName}")
-                Log.d("WorkoutDebug", "Username: ${workout.username}")
-                Log.d("WorkoutDebug", "Time: ${workout.hourOf}:${"%02d".format(workout.minuteOf)}")
+                thread {
+                    val db = AppDatabase.getDatabase(requireContext())
+                        val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                    val userId = prefs.getInt("logged_in_user_id", -1)
 
-                workout.exercises.forEachIndexed { exIndex, exercise ->
-                    Log.d("WorkoutDebug", "  Exercise ${exIndex + 1}: ${exercise.name} [Type: ${exercise.type}]")
+                    val user = db.userDao().getUser(userId)
+                    val profile = user.profile ?: Profile("Unknown", "None", 0, 0, emptyList())
 
-                    exercise.sets.forEachIndexed { setIndex, set ->
-                        Log.d(
-                            "WorkoutDebug",
-                            "    Set ${setIndex + 1}: ${set.reps} reps, ${set.addedWeight}kg, ${set.time} sec"
-                        )
+                    // Save updated workout with proper user ID
+                    val savedWorkout = workout.copy(userId = userId)
+                    db.workoutDao().insert(savedWorkout)
+
+                    // ✅ Log workout info + profile name
+                    Log.d("WorkoutDebug", "Workout Name: ${savedWorkout.workoutName}")
+                    Log.d("WorkoutDebug", "Username: ${profile.name}")
+                    Log.d("WorkoutDebug", "Time: ${savedWorkout.hourOf}:${"%02d".format(savedWorkout.minuteOf)}")
+
+                    savedWorkout.exercises.forEachIndexed { exIndex, exercise ->
+                        Log.d("WorkoutDebug", "  Exercise ${exIndex + 1}: ${exercise.name} [Type: ${exercise.type}]")
+                        exercise.sets.forEachIndexed { setIndex, set ->
+                            Log.d(
+                                "WorkoutDebug",
+                                "    Set ${setIndex + 1}: ${set.reps} reps, ${set.addedWeight}kg, ${set.time} sec"
+                            )
+                        }
                     }
+
+                    Log.d("WorkoutSave", "Workout saved to DB for ${profile.name}")
                 }
             }
 
             // RETURN / SAVE WORKOUT DATA HERE
+            // RETURN / SAVE WORKOUT DATA HERE
+            thread {
+                val db = AppDatabase.getDatabase(requireContext())
+                val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
+                val userId = prefs.getInt("logged_in_user_id", -1)
+
+                // ✅ Get user and their profile
+                val user = db.userDao().getUser(userId)
+                val profile = user.profile ?: Profile("Unknown", "None", 0, 0, emptyList())
+
+                currentWorkout?.let { workout ->
+                    val savedWorkout = workout.copy(userId = userId)
+                    db.workoutDao().insert(savedWorkout)
+                    Log.d("WorkoutSave", "Workout saved to DB for ${profile.name}")
+                }
+            }
 
             // Optionally show a success message or summary
             binding.workoutTimer.text = "Workout finished!"

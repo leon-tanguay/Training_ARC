@@ -19,11 +19,14 @@ class ProfileFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        val profileViewModel =
-            ViewModelProvider(this)[ProfileViewModel::class.java]
-
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
         val root: View = binding.root
+
+        // ✅ Correct ViewModelProvider for AndroidViewModel
+        val profileViewModel = ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[ProfileViewModel::class.java]
 
         profileViewModel.profile.observe(viewLifecycleOwner) { profile ->
             binding.nameText.text = profile.name
