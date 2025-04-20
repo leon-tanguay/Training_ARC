@@ -23,6 +23,16 @@ class LoginActivity : AppCompatActivity() {
         usernameInput = findViewById(R.id.usernameInput)
         loginButton = findViewById(R.id.loginButton)
 
+        // ✅ Trigger login when pressing enter
+        usernameInput.setOnEditorActionListener { _, actionId, _ ->
+            if (actionId == android.view.inputmethod.EditorInfo.IME_ACTION_DONE) {
+                loginButton.performClick()
+                true
+            } else {
+                false
+            }
+        }
+
         loginButton.setOnClickListener {
             val username = usernameInput.text.toString().trim()
             if (username.isNotEmpty()) {
@@ -30,7 +40,6 @@ class LoginActivity : AppCompatActivity() {
                     val db = AppDatabase.getDatabase(this)
                     val userDao = db.userDao()
 
-                    // Check if user exists
                     val existing = userDao.getUserByUsername(username)
                     val userId = existing?.userId ?: userDao.insert(
                         User(
@@ -50,13 +59,11 @@ class LoginActivity : AppCompatActivity() {
                         )
                     )
 
-                    // Save logged in user ID to SharedPreferences
                     val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
                     prefs.edit {
                         putInt("logged_in_user_id", userId.toInt())
                     }
 
-                    // Launch MainActivity
                     runOnUiThread {
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
