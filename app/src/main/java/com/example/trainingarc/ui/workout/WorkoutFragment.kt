@@ -62,8 +62,7 @@ class WorkoutFragment : Fragment() {
         _binding = FragmentWorkoutBinding.inflate(inflater, container, false)
         val root = binding.root
 
-        val testPerson = Profile("greg", "gregs g's",
-            25, 4, emptyList())
+        val testPerson = Profile("greg", "greg’s g's", 25, listOf(4))
 
         binding.addWorkoutButton.setOnClickListener {
             val now = Calendar.getInstance()
@@ -183,7 +182,8 @@ class WorkoutFragment : Fragment() {
 
 
                     val user = db.userDao().getUser(userId)
-                    val profile = user.profile ?: Profile("Unknown", "None", 0, 0, emptyList())
+                    val profile = Profile("greg", "greg’s g's", 25, listOf(4))
+
 
                     // Save updated workout with proper user ID
                     val savedWorkout = workout.copy(userId = userId)
@@ -220,7 +220,8 @@ class WorkoutFragment : Fragment() {
 
                 // ✅ Get user and their profile
                 val user = db.userDao().getUser(userId)
-                val profile = user.profile ?: Profile("Unknown", "None", 0, 0, emptyList())
+                val profile = user.profile ?: Profile("greg", "greg’s g's", 25, listOf(4))
+
 
                 currentWorkout?.let { workout ->
                     val savedWorkout = workout.copy(userId = userId)

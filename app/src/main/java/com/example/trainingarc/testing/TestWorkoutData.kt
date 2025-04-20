@@ -8,7 +8,7 @@ import com.example.trainingarc.model.AppDatabase
 suspend fun generateTestWorkoutFeed(context: Context): WorkoutFeed {
     val db = AppDatabase.getDatabase(context)
 
-    val testProfile = Profile("greg", "greg’s g's", 25, 4, emptyList())
+    val testProfile = Profile("greg", "greg’s g's", profilePicResId = 25, badges = emptyList())
 
     val userId = db.userDao().insert(
         User(username = "greg", email = "", profile = testProfile)

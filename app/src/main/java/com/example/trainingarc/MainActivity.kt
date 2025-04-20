@@ -21,6 +21,8 @@ import java.util.concurrent.TimeUnit
 
 class MainActivity : AppCompatActivity() {
 
+    private var loggedInUserId: Int = -1
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var questOverlay: FrameLayout
     private lateinit var questListContainer: LinearLayout
@@ -54,8 +56,36 @@ class MainActivity : AppCompatActivity() {
         "Mat master - complete a workout on a mat"
     )
 
+    private fun updateUserPoints(pointsToAdd: Int) {
+        Thread {
+            val db = com.example.trainingarc.model.AppDatabase.getDatabase(applicationContext)
+            val userDao = db.userDao()
+            val user = userDao.getUser(loggedInUserId)
+
+            if (user != null) {
+                val newTotalPoints = user.points + pointsToAdd
+                val newWeeklyPoints = user.pointsThisWeek + pointsToAdd
+
+                val updatedUser = user.copy(
+                    points = newTotalPoints,
+                    pointsThisWeek = newWeeklyPoints
+                )
+
+                userDao.updateUser(updatedUser)
+
+                val newLevel = updatedUser.level
+                val progress = updatedUser.progressToNextLevel
+
+                Log.d("XP_DEBUG", "Points updated: ${updatedUser.points}, Weekly: ${updatedUser.pointsThisWeek}, Level: $newLevel, Progress: $progress/100")
+            }
+        }.start()
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val prefs = getSharedPreferences("user_prefs", MODE_PRIVATE)
+        loggedInUserId = prefs.getInt("logged_in_user_id", -1)
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -208,6 +238,22 @@ class MainActivity : AppCompatActivity() {
             isChecked = questCompletionMap[text] ?: false
             setOnCheckedChangeListener { _, isChecked ->
                 questCompletionMap[text] = isChecked
+
+                if (isChecked) {
+                    val lowerText = text.lowercase()
+                    val isDaily = allDailyQuests.any { lowerText.contains(it.lowercase()) } || lowerText.contains("go to the gym") || lowerText.contains("cardio")
+                    val isWeekly = allWeeklyQuests.any { lowerText.contains(it.lowercase()) }
+
+                    val pointsToAdd = when {
+                        isDaily -> 10
+                        isWeekly -> 50
+                        else -> 0
+                    }
+
+                    if (pointsToAdd > 0) {
+                        updateUserPoints(pointsToAdd)
+                    }
+                }
             }
             setPadding(0, 0, 16, 0)
         }

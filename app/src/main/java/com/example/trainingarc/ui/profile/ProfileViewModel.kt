@@ -7,20 +7,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.trainingarc.model.AppDatabase
-import com.example.trainingarc.model.Profile
+import com.example.trainingarc.model.User
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class ProfileViewModel(application: Application) : AndroidViewModel(application) {
 
-    private val _profile = MutableLiveData<Profile>()
-    val profile: LiveData<Profile> get() = _profile
+    private val _user = MutableLiveData<User>()
+    val user: LiveData<User> get() = _user
 
-    init {
-        loadLoggedInUserProfile()
-    }
-
-    private fun loadLoggedInUserProfile() {
+    fun reloadUser() {
         viewModelScope.launch(Dispatchers.IO) {
             val context = getApplication<Application>().applicationContext
             val prefs = context.getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
@@ -29,8 +25,8 @@ class ProfileViewModel(application: Application) : AndroidViewModel(application)
             if (userId != -1) {
                 val db = AppDatabase.getDatabase(context)
                 val user = db.userDao().getUser(userId)
-                user.profile?.let {
-                    _profile.postValue(it)
+                user?.let {
+                    _user.postValue(it)
                 }
             }
         }

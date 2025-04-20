@@ -14,37 +14,44 @@ class ProfileFragment : Fragment() {
     private var _binding: FragmentProfileBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var profileViewModel: ProfileViewModel
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentProfileBinding.inflate(inflater, container, false)
-        val root: View = binding.root
+        return binding.root
+    }
 
-        // ✅ Correct ViewModelProvider for AndroidViewModel
-        val profileViewModel = ViewModelProvider(
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        profileViewModel = ViewModelProvider(
             this,
             ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
         )[ProfileViewModel::class.java]
 
-        profileViewModel.profile.observe(viewLifecycleOwner) { profile ->
-            binding.nameText.text = profile.name
-            binding.teamText.text = profile.team
-            binding.levelText.text = "Level ${profile.level}"
-            binding.profileImage.setImageResource(profile.profilePicResId)
+        profileViewModel.user.observe(viewLifecycleOwner) { user ->
+            val profile = user.profile
 
-            if (profile.badges.size >= 3) {
-                binding.badge1.setImageResource(profile.badges[0])
-                binding.badge2.setImageResource(profile.badges[1])
-                binding.badge3.setImageResource(profile.badges[2])
+            binding.nameText.text = profile?.name ?: "Unknown"
+            binding.teamText.text = profile?.team ?: "No Team"
+            binding.levelText.text = "Level ${user.level}"
+            binding.xpProgressBar.progress = user.progressToNextLevel
+
+            profile?.badges?.let { badges ->
+                if (badges.size >= 3) {
+                    binding.badge1.setImageResource(badges[0])
+                    binding.badge2.setImageResource(badges[1])
+                    binding.badge3.setImageResource(badges[2])
+                }
             }
         }
 
-        // ✅ Hide the back arrow
-        (requireActivity() as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
-
-        return root
+        // ✅ Reload profile as soon as view is created and viewModel is ready
+        profileViewModel.reloadUser()
     }
 
     override fun onDestroyView() {

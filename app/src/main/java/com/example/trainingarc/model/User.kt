@@ -9,5 +9,15 @@ data class User(
     @PrimaryKey(autoGenerate = true) val userId: Int = 0,
     val username: String,
     val email: String,
-    @Embedded val profile: Profile? = null // ✅ Store profile directly
-)
+    val points: Int = 0,
+    val pointsThisWeek: Int = 0,
+
+    @Embedded(prefix = "profile_")
+    val profile: Profile? = null
+) {
+    val level: Int
+        get() = (points / 100) + 1
+
+    val progressToNextLevel: Int
+        get() = points % 100
+}
