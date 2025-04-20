@@ -50,8 +50,26 @@ class HistoryFragment : Fragment() {
             val container = binding.root.findViewById<LinearLayout>(R.id.workout_container)
             val inflater = LayoutInflater.from(context)
 
+            if (workouts.isEmpty()) {
+                val emptyText = TextView(context).apply {
+                    text = "Your future workouts will be shown here!"
+                    textSize = 16f
+                    setTextColor(resources.getColor(android.R.color.darker_gray, null))
+                    setPadding(24, 48, 24, 0)
+                    textAlignment = View.TEXT_ALIGNMENT_CENTER
+                    layoutParams = LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.MATCH_PARENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT
+                    ).apply {
+                        setMargins(0, 100, 0, 0) // Optional: adds top spacing
+                    }
+                }
+                container.addView(emptyText)
+                return@launch
+            }
+
             for (workout in workouts) {
-                val box = inflater.inflate(R.layout.item_workout_box, binding.workoutContainer, false)
+                val box = inflater.inflate(R.layout.item_workout_box, container, false)
 
                 val titleText = box.findViewById<TextView>(R.id.workout_title)
                 val usernameText = box.findViewById<TextView>(R.id.workout_username)
@@ -61,7 +79,7 @@ class HistoryFragment : Fragment() {
 
                 val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
                 val workoutDate = workout.startDateTime.toLocalDate().format(formatter)
-                usernameText.text = workoutDate // e.g. "Apr 19, 2025"
+                usernameText.text = workoutDate
 
                 val maxToShow = 4
                 for ((index, exercise) in workout.exercises.withIndex()) {
@@ -94,7 +112,7 @@ class HistoryFragment : Fragment() {
                     highlightContainer.addView(moreText)
                 }
 
-                binding.workoutContainer.addView(box)
+                container.addView(box)
             }
         }
     }

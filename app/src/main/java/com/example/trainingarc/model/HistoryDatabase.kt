@@ -8,7 +8,7 @@ import androidx.room.TypeConverters
 import com.example.trainingarc.data.UserDao
 import com.example.trainingarc.data.WorkoutDao
 
-@Database(entities = [User::class, Workout::class], version = 4)
+@Database(entities = [User::class, Workout::class], version = 5)
 @TypeConverters(Converters::class)
 abstract class HistoryDatabase : RoomDatabase() {
 

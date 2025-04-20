@@ -7,16 +7,34 @@
     android:fillViewport="true"
     android:clipToPadding="false"
     android:paddingBottom="96dp"
+    android:background="@android:color/transparent"
     android:overScrollMode="ifContentScrolls"
     tools:context=".ui.home.HomeFragment">
 
-    <LinearLayout
-        android:id="@+id/workout_container"
+    <!-- ✅ Wrap everything in a FrameLayout -->
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingTop="16dp"
-        android:paddingStart="16dp"
-        android:paddingEnd="16dp"
-        android:gravity="center_horizontal" />
+        android:layout_height="wrap_content">
+
+        <!-- Background image that scrolls with content -->
+        <ImageView
+            android:id="@+id/backgroundImage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@drawable/waterfallbackground"
+            android:adjustViewBounds="true" />
+
+        <!-- Content on top of background -->
+        <LinearLayout
+            android:id="@+id/workout_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:paddingTop="16dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:gravity="center_horizontal"
+            android:background="@android:color/transparent" />
+    </FrameLayout>
 </androidx.core.widget.NestedScrollView>

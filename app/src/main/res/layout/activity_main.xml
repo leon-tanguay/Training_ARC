@@ -11,7 +11,7 @@
         android:id="@+id/topAppBar"
         android:layout_width="0dp"
         android:layout_height="72dp"
-        android:background="?attr/colorPrimary"
+        android:background="@drawable/bambootop"
         android:title="Training Arc"
         android:titleTextColor="@android:color/white"
         app:layout_constraintTop_toTopOf="parent"

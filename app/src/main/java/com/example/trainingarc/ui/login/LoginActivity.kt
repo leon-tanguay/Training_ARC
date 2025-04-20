@@ -48,11 +48,11 @@ class LoginActivity : AppCompatActivity() {
                             profile = Profile(
                                 name = username,
                                 team = "New Recruit",
-                                profilePicResId = R.drawable.profile_pic_placeholder,
+                                profilePicResId = R.drawable.example_pfp,
                                 badges = listOf(
-                                    R.drawable.badge_fire,
-                                    R.drawable.badge_lightning,
-                                    R.drawable.badge_dragon
+                                    R.drawable.gold_medal,
+                                    R.drawable.silver_medal,
+                                    R.drawable.bronze_medal
                                 )
                             )
                         )
