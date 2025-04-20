@@ -22,7 +22,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import kotlin.concurrent.thread
 import android.content.Context
-
+import java.time.LocalDateTime
 import android.util.Log
 
 import java.util.*
@@ -73,10 +73,11 @@ class WorkoutFragment : Fragment() {
             // Create the new workout instance
             currentWorkout = Workout(
                 workoutName = "Workout at ${"%02d".format(hour)}:${"%02d".format(minute)}",
-                userId = -1, // placeholder; will be replaced later when saving
+                userId = -1,
                 hourOf = hour,
                 minuteOf = minute,
-                exercises = emptyList()
+                exercises = emptyList(),
+                startDateTime = LocalDateTime.now()
             )
 
             // Show new workout UI
@@ -188,6 +189,7 @@ class WorkoutFragment : Fragment() {
                     Log.d("WorkoutDebug", "Workout Name: ${savedWorkout.workoutName}")
                     Log.d("WorkoutDebug", "Username: ${profile.name}")
                     Log.d("WorkoutDebug", "Time: ${savedWorkout.hourOf}:${"%02d".format(savedWorkout.minuteOf)}")
+                    Log.d("WorkoutDebug", "Start DateTime: ${savedWorkout.startDateTime}")
 
                     savedWorkout.exercises.forEachIndexed { exIndex, exercise ->
                         Log.d("WorkoutDebug", "  Exercise ${exIndex + 1}: ${exercise.name} [Type: ${exercise.type}]")

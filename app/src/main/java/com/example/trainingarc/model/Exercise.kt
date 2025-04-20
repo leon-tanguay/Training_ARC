@@ -1,9 +1,12 @@
 package com.example.trainingarc.model
 
+import java.time.LocalDateTime
+
 data class Exercise(
     val name: String,
     val sets: List<Set>,
-    val type: String
+    val type: String,
+    val startTime: LocalDateTime = LocalDateTime.now() // default to current time
 ) {
     val totalTime: Int
         get() = sets.sumOf { it.time }
@@ -32,5 +35,4 @@ data class Exercise(
                 else -> """"${bestSet.time} sec""""
             }
         }
-
 }

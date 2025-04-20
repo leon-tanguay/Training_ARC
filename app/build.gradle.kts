@@ -31,7 +31,9 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
+        isCoreLibraryDesugaringEnabled = true // ✅ Required for LocalDateTime below API 26
     }
+
 
     kotlinOptions {
         jvmTarget = "11"
@@ -45,6 +47,8 @@ android {
 dependencies {
     val room_version = "2.6.1"
     implementation("com.google.code.gson:gson:2.10.1") // or latest version
+
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.0.4")
 
     implementation("androidx.core:core-ktx:1.12.0")
     implementation("androidx.appcompat:appcompat:1.6.1")
