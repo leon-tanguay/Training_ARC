@@ -134,9 +134,9 @@ class WorkoutFragment : Fragment() {
                 for (j in 0 until setContainer.childCount) {
                     val setView = setContainer.getChildAt(j)
 
-                    val reps = setView.findViewById<EditText>(R.id.repsInput).text.toString().toIntOrNull() ?: "NA"
-                    val weight = setView.findViewById<EditText>(R.id.weightInput).text.toString().toIntOrNull() ?: "NA"
-                    val time = setView.findViewById<EditText>(R.id.timeInput).text.toString().toIntOrNull() ?: "NA"
+                    val reps = setView.findViewById<EditText>(R.id.repsInput).text.toString().toIntOrNull() ?: -1
+                    val weight = setView.findViewById<EditText>(R.id.weightInput).text.toString().toIntOrNull() ?: -1
+                    val time = setView.findViewById<EditText>(R.id.timeInput).text.toString().toIntOrNull() ?: -1
 
                     sets.add(Set(
                         time = time,
