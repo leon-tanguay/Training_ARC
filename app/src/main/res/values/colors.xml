@@ -13,4 +13,5 @@
     <color name="timer_warning_orange">#FF9800</color>
     <color name="timer_warning_red">#F44336</color>
     <color name="timer_dark_red">#B71C1C</color>
+    <color name="holo_red_dark">#D32F2F</color>
 </resources>

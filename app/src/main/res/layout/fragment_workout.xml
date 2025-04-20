@@ -61,7 +61,17 @@
             android:layout_marginTop="8dp"/>
 
         <!-- Your future inputs for reps/weight/etc would go here -->
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
+            <LinearLayout
+                android:id="@+id/exerciseParentContainer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp" />
+        </ScrollView>
     </LinearLayout>
 
     <!-- Add Workout Button -->

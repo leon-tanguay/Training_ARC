@@ -1,6 +1,57 @@
-<?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="8dp"
+    android:layout_marginBottom="4dp">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <!-- Set number -->
+    <TextView
+        android:id="@+id/setLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set 1"
+        android:textStyle="bold"
+        android:layout_marginEnd="8dp" />
+
+    <!-- Reps -->
+    <EditText
+        android:id="@+id/repsInput"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:hint="Reps"
+        android:inputType="number"
+        android:layout_height="wrap_content"/>
+
+    <!-- Weight -->
+    <EditText
+        android:id="@+id/weightInput"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:hint="Weight"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp"/>
+
+    <!-- Time -->
+    <EditText
+        android:id="@+id/timeInput"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:hint="Time"
+        android:inputType="number"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="4dp" />
+
+    <!-- Red X delete icon -->
+    <ImageView
+        android:id="@+id/deleteSetButton"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
+        android:layout_marginStart="8dp"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        app:tint="@color/holo_red_dark"
+        android:contentDescription="Delete set" />
+</LinearLayout>

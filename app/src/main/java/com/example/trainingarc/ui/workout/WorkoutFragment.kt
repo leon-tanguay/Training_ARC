@@ -16,6 +16,12 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.trainingarc.R
 
+import android.widget.TextView
+import android.widget.LinearLayout
+import android.widget.EditText
+import android.widget.ImageView
+
+import android.util.Log
 
 import java.util.*
 
@@ -80,15 +86,119 @@ class WorkoutFragment : Fragment() {
             timerHandler.post(timerRunnable)
         }
 
+        fun updateSetLabels(container: LinearLayout) {
+            for (i in 0 until container.childCount) {
+                val row = container.getChildAt(i)
+                val label = row.findViewById<TextView>(R.id.setLabel)
+                label.text = "Set ${i + 1}"
+            }
+        }
+
+        fun addSetRow(setContainer: LinearLayout, exerciseBlock: View) {
+            val setRow = layoutInflater.inflate(R.layout.item_set_row, setContainer, false)
+
+            val deleteButton = setRow.findViewById<ImageView>(R.id.deleteSetButton)
+            deleteButton.setOnClickListener {
+                // Remove the current set row
+                setContainer.removeView(setRow)
+
+                // If no sets remain, remove the entire exercise block
+                if (setContainer.childCount == 0) {
+                    val parent = binding.exerciseParentContainer
+                    parent.removeView(exerciseBlock)
+                } else {
+                    // Otherwise just update the set labels
+                    updateSetLabels(setContainer)
+                }
+            }
+
+            setContainer.addView(setRow)
+            updateSetLabels(setContainer)
+        }
+
         binding.finishWorkoutButton.setOnClickListener {
+
             // Stop the timer
             timerHandler.removeCallbacks(timerRunnable)
 
-            // Optional: save workout, show summary, etc.
-            binding.workoutTimer.text = "Workout finished!"
+            val updatedExercises = mutableListOf<Exercise>()
+            val parentContainer = binding.exerciseParentContainer
 
-            // Hide finish button or reset UI
+            for (i in 0 until parentContainer.childCount) {
+                val exerciseBlock = parentContainer.getChildAt(i)
+                val nameView = exerciseBlock.findViewById<TextView>(R.id.exerciseNameText)
+                val setContainer = exerciseBlock.findViewById<LinearLayout>(R.id.setContainer)
+
+                val sets = mutableListOf<Set>()
+
+                for (j in 0 until setContainer.childCount) {
+                    val setView = setContainer.getChildAt(j)
+
+                    val reps = setView.findViewById<EditText>(R.id.repsInput).text.toString().toIntOrNull() ?: "NA"
+                    val weight = setView.findViewById<EditText>(R.id.weightInput).text.toString().toIntOrNull() ?: "NA"
+                    val time = setView.findViewById<EditText>(R.id.timeInput).text.toString().toIntOrNull() ?: "NA"
+
+                    sets.add(Set(
+                        time = time,
+                        reps = reps,
+                        addedWeight = weight
+                    ))
+                }
+
+                updatedExercises.add(
+                    Exercise(
+                        name = nameView.text.toString(),
+                        sets = sets,
+                        type = when {
+                            sets.any { it.addedWeight > 0 } -> "weight"
+                            sets.any { it.reps > 0 } -> "reps"
+                            else -> "time"
+                        }
+                    )
+                )
+            }
+
+            currentWorkout = currentWorkout?.copy(exercises = updatedExercises)
+
+            // ✅ Save workout
+            currentWorkout = currentWorkout?.copy(exercises = updatedExercises)
+
+            // ✅ Print everything
+            currentWorkout?.let { workout ->
+                Log.d("WorkoutDebug", "Workout Name: ${workout.workoutName}")
+                Log.d("WorkoutDebug", "Username: ${workout.username}")
+                Log.d("WorkoutDebug", "Time: ${workout.hourOf}:${"%02d".format(workout.minuteOf)}")
+
+                workout.exercises.forEachIndexed { exIndex, exercise ->
+                    Log.d("WorkoutDebug", "  Exercise ${exIndex + 1}: ${exercise.name} [Type: ${exercise.type}]")
+
+                    exercise.sets.forEachIndexed { setIndex, set ->
+                        Log.d(
+                            "WorkoutDebug",
+                            "    Set ${setIndex + 1}: ${set.reps} reps, ${set.addedWeight}kg, ${set.time} sec"
+                        )
+                    }
+                }
+            }
+
+            // RETURN / SAVE WORKOUT DATA HERE
+
+            // Optionally show a success message or summary
+            binding.workoutTimer.text = "Workout finished!"
             binding.finishWorkoutButton.visibility = View.GONE
+
+            // Clear all dynamic views
+            binding.exerciseParentContainer.removeAllViews()
+
+            // Reset all views to match the initial state
+            binding.workoutTimer.visibility = View.GONE
+            binding.addExerciseSection.visibility = View.GONE
+            binding.finishWorkoutButton.visibility = View.GONE
+            binding.addWorkoutButton.visibility = View.VISIBLE
+            binding.workoutTimer.text = "Workout Timer: 00:00:00"
+
+            // Reset the data
+            currentWorkout = null
         }
 
 //        binding.addExerciseButton.setOnClickListener {
@@ -109,10 +219,11 @@ class WorkoutFragment : Fragment() {
 //            }
 //        }
 
+
         binding.addExerciseButton.setOnClickListener {
-            val dialogView = layoutInflater.inflate(
-                com.example.trainingarc.R.layout.dialog_exercise_selector, null
-            )
+
+
+            val dialogView = layoutInflater.inflate(R.layout.dialog_exercise_selector, null)
 
             val dialog = AlertDialog.Builder(requireContext())
                 .setView(dialogView)
@@ -120,25 +231,39 @@ class WorkoutFragment : Fragment() {
 
             val exerciseList = listOf(
                 "Push Ups", "Squats", "Deadlift", "Plank", "Jump Rope", "Burpees", "Bench Press"
-                // Add as many as needed
             )
 
             val recyclerView = dialogView.findViewById<RecyclerView>(R.id.exerciseRecyclerView)
             val searchView = dialogView.findViewById<SearchView>(R.id.searchView)
 
             val adapter = ExerciseAdapter(exerciseList) { selected ->
-                // User selected an exercise
+                // Add to currentWorkout model (optional, already doing this)
                 val workout = currentWorkout
                 if (workout != null) {
-                    val newExercise = Exercise(
-                        name = selected,
-                        sets = emptyList(),
-                        type = "reps"
-                    )
                     val updatedList = workout.exercises.toMutableList()
-                    updatedList.add(newExercise)
+                    updatedList.add(Exercise(selected, emptyList(), "reps"))
                     currentWorkout = workout.copy(exercises = updatedList)
                 }
+
+                // 🧱 Inflate the exercise block UI
+                val exerciseBlock = layoutInflater.inflate(R.layout.exercise_list_box, binding.exerciseParentContainer, false)
+
+                val nameText = exerciseBlock.findViewById<TextView>(R.id.exerciseNameText)
+                val setContainer = exerciseBlock.findViewById<LinearLayout>(R.id.setContainer)
+                val addSetButton = exerciseBlock.findViewById<View>(R.id.addSetButton)
+
+
+                nameText.text = selected
+
+                // Add initial set row
+                addSetRow(setContainer, exerciseBlock)
+
+                // Wire the Add Set button
+                addSetButton.setOnClickListener { addSetRow(setContainer, exerciseBlock) }
+
+                // Add the full exercise block to the parent container
+                binding.exerciseParentContainer.addView(exerciseBlock)
+
                 dialog.dismiss()
             }
 
@@ -158,6 +283,7 @@ class WorkoutFragment : Fragment() {
 
             dialog.show()
         }
+
 
 
         return root
