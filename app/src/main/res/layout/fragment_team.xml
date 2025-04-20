@@ -12,101 +12,59 @@
         android:layout_marginTop="12dp"
         android:elevation="2dp">
 
-        <!-- Banner Background Image -->
+    <!-- Banner Background Image (goes behind everything) -->
+    <ImageView
+        android:id="@+id/teamBanner"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:src="@drawable/bannerclan2"
+        android:contentDescription="Team Banner" />
+
+    <!-- Foreground: Team Name + Level -->
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="top|center_horizontal"
+        android:layout_marginTop="34dp"
+    android:paddingHorizontal="24dp"
+    android:paddingVertical="4dp">
+
+    <TextView
+        android:id="@+id/teamName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Spencer's Soldiers"
+        android:textSize="20sp"
+        android:fontFamily="@font/baskervilleregular"
+        android:textStyle="bold"
+        android:textColor="#333333"
+        android:layout_marginEnd="8dp" />
+
+    <FrameLayout
+        android:layout_width="@dimen/title_icon_size"
+        android:layout_height="@dimen/title_icon_size">
+
         <ImageView
-            android:id="@+id/teamBanner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:src="@drawable/bannerclan2"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:contentDescription="Team Banner" />
-
-        <!-- Foreground: Team Name + Level inside the banner -->
-        <LinearLayout
-            android:id="@+id/teamHeader"
+            android:id="@+id/starIcon"
             android:layout_width="match_parent"
-            android:layout_height="140dp"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:layout_height="match_parent"
+            android:src="@drawable/level_icon_24dp"
+            android:contentDescription="Team Level Star" />
 
-            <!-- Top spacer (more space above) -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1" />
-
-            <!-- Centered horizontal content -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingStart="24dp"
-                android:paddingEnd="24dp"
-                android:paddingTop="8dp"
-                android:paddingBottom="8dp"
-                android:gravity="center">
-
-                <!-- Left spacer -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-
-                <!-- Team name and level -->
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/teamName"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Team Name Here"
-                        android:textSize="20sp"
-                        android:fontFamily="@font/baskervilleregular"
-                        android:textStyle="bold"
-                        android:textColor="#333333"
-                        android:layout_marginEnd="8dp" />
-
-                    <FrameLayout
-                        android:layout_width="@dimen/title_icon_size"
-                        android:layout_height="@dimen/title_icon_size">
-
-                        <ImageView
-                            android:id="@+id/starIcon"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:src="@drawable/level_icon_24dp"
-                            android:contentDescription="Team Level Star" />
-
-                        <TextView
-                            android:id="@+id/teamLevel"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:text="5"
-                            android:textSize="20sp"
-                            android:gravity="center"
-                            android:textColor="@android:color/black"
-                            android:textStyle="bold" />
-                    </FrameLayout>
-                </LinearLayout>
-
-                <!-- Right spacer -->
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1" />
-            </LinearLayout>
-
-            <!-- Bottom spacer (less space below) -->
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="9" />
-        </LinearLayout>
+        <TextView
+            android:id="@+id/teamLevel"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="8"
+            android:textSize="16sp"
+            android:gravity="center"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+    </FrameLayout>
+</LinearLayout>
     </FrameLayout>
 
 
