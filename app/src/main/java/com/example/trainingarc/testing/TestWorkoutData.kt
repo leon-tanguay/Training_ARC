@@ -1,9 +1,18 @@
-package com.example.trainingarc.util
+// File: testing/TestWorkoutData.kt
+package com.example.trainingarc.testing
 
+import android.content.Context
 import com.example.trainingarc.model.*
+import com.example.trainingarc.model.AppDatabase
 
-fun generateTestWorkoutFeed(): WorkoutFeed {
+suspend fun generateTestWorkoutFeed(context: Context): WorkoutFeed {
+    val db = AppDatabase.getDatabase(context)
+
     val testProfile = Profile("greg", "greg’s g's", 25, 4, emptyList())
+
+    val userId = db.userDao().insert(
+        User(username = "greg", email = "", profile = testProfile)
+    ).toInt()
 
     val commonYogaExercises = listOf(
         Exercise("Downward Dog", listOf(Set(60, 0, 0)), "Stretching"),
@@ -17,7 +26,7 @@ fun generateTestWorkoutFeed(): WorkoutFeed {
         add(
             Workout(
                 workoutName = "Ultimate Full Body",
-                userId = -1,
+                userId = userId,
                 hourOf = 7,
                 minuteOf = 15,
                 exercises = listOf(
@@ -30,21 +39,23 @@ fun generateTestWorkoutFeed(): WorkoutFeed {
                 )
             )
         )
+
         repeat(8) {
             add(
                 Workout(
                     workoutName = "Evening Yoga",
-                    userId = -1,
+                    userId = userId,
                     hourOf = 18,
                     minuteOf = 0,
                     exercises = commonYogaExercises
                 )
             )
         }
+
         add(
             Workout(
                 workoutName = "Legs & Core",
-                userId = -1,
+                userId = userId,
                 hourOf = 17,
                 minuteOf = 45,
                 exercises = listOf(
