@@ -16,6 +16,8 @@ import com.example.trainingarc.databinding.FragmentHistoryBinding
 import com.example.trainingarc.model.*
 import com.example.trainingarc.R
 import android.content.Context
+import java.time.format.DateTimeFormatter
+
 class HistoryFragment : Fragment() {
 
     private var _binding: FragmentHistoryBinding? = null
@@ -57,12 +59,9 @@ class HistoryFragment : Fragment() {
 
                 titleText.text = workout.workoutName
 
-                val profileName = withContext(Dispatchers.IO) {
-                    val db = AppDatabase.getDatabase(context)
-                    val user = db.userDao().getUser(workout.userId)
-                    user?.profile?.name ?: "Unknown"
-                }
-                usernameText.text = "by $profileName"
+                val formatter = DateTimeFormatter.ofPattern("MMM dd, yyyy")
+                val workoutDate = workout.startDateTime.toLocalDate().format(formatter)
+                usernameText.text = workoutDate // e.g. "Apr 19, 2025"
 
                 val maxToShow = 4
                 for ((index, exercise) in workout.exercises.withIndex()) {
