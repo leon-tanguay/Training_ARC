@@ -76,7 +76,20 @@ class MainActivity : AppCompatActivity() {
                 val newLevel = updatedUser.level
                 val progress = updatedUser.progressToNextLevel
 
-                Log.d("XP_DEBUG", "Points updated: ${updatedUser.points}, Weekly: ${updatedUser.pointsThisWeek}, Level: $newLevel, Progress: $progress/100")
+                Log.d(
+                    "XP_DEBUG",
+                    "Points updated: ${updatedUser.points}, Weekly: ${updatedUser.pointsThisWeek}, Level: $newLevel, Progress: $progress/100"
+                )
+
+                // ✅ Notify ProfileFragment if it's active
+                runOnUiThread {
+                    val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main)
+                    val currentFragment = navHostFragment?.childFragmentManager?.primaryNavigationFragment
+
+                    if (currentFragment is com.example.trainingarc.ui.profile.ProfileFragment) {
+                        currentFragment.refreshProfile()
+                    }
+                }
             }
         }.start()
     }
