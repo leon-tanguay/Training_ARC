@@ -4,7 +4,8 @@
     android:gravity="center"
     android:padding="24dp"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@drawable/homescreen">
 
     <EditText
         android:id="@+id/usernameInput"
@@ -13,13 +14,15 @@
         android:hint="Enter your username"
         android:imeOptions="actionDone"
         android:inputType="text"
-        android:singleLine="true" />
+        android:textColor="#222222"
+        android:textStyle="bold" />
 
     <Button
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Log In"
-        android:layout_marginTop="16dp" />
+        android:layout_marginTop="16dp"
+        android:backgroundTint="@color/sakura_pink" /> <!-- Set the button color to Sakura Pink -->
 
 </LinearLayout>
