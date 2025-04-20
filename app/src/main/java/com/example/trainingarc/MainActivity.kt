@@ -196,9 +196,9 @@ class MainActivity : AppCompatActivity() {
 
         // Fixed daily quests
         val dailyQuests = listOf(
-            "🏋️ Go to the gym",
-            "🏃 Cardio",
-            "🎯 " + getTodayDailyQuest()
+            "Go to the gym",
+            "Cardio",
+            getTodayDailyQuest()
         )
 
         dailyQuests.forEach { quest ->
