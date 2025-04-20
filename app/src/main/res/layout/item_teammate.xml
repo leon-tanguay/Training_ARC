@@ -10,6 +10,7 @@
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:text="Name"
+        android:fontFamily="@font/chakrapetchregular"
         android:textSize="16sp" />
 
     <TextView
@@ -18,5 +19,6 @@
         android:layout_height="wrap_content"
         android:text="0000"
         android:textSize="16sp"
+        android:fontFamily="@font/chakrapetchregular"
         android:gravity="end" />
 </LinearLayout>

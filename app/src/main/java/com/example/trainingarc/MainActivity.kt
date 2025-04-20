@@ -259,7 +259,7 @@ class MainActivity : AppCompatActivity() {
             setPadding(0, 0, 16, 0)
         }
 
-        val customFont = ResourcesCompat.getFont(this, R.font.baskervilleregular)
+        val customFont = ResourcesCompat.getFont(this, R.font.chakrapetchregular)
 
         val textView = TextView(this).apply {
             this.text = text

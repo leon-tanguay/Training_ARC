@@ -2,8 +2,8 @@
     <style name="ToolbarTitleBoldWhite" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textStyle">bold</item>
         <item name="android:textColor">#FFFFFF</item>
-        <item name="android:fontFamily">@font/baskervilleregular</item>
-        <item name="fontFamily">@font/baskervilleregular</item>
-        <item name="android:textSize">20sp</item> <!-- optional: increase text size -->
+        <item name="android:fontFamily">@font/chakrapetchregular</item>
+        <item name="fontFamily">@font/chakrapetchregular</item>
+        <item name="android:textSize">20sp</item>
     </style>
 </resources>
