@@ -28,7 +28,7 @@ import android.util.Log
 import java.util.*
 import com.example.trainingarc.model.AppDatabase
 
-import com.example.trainingarc.model.Exercise
+import com.example.trainingarc.model.*
 import com.example.trainingarc.model.Profile
 import com.example.trainingarc.model.Set
 import com.example.trainingarc.model.Workout
@@ -178,12 +178,18 @@ class WorkoutFragment : Fragment() {
                         val prefs = requireContext().getSharedPreferences("user_prefs", Context.MODE_PRIVATE)
                     val userId = prefs.getInt("logged_in_user_id", -1)
 
+                    // ✅ Also save to history database
+                    val historyDb = HistoryDatabase.getDatabase(requireContext())
+
+
                     val user = db.userDao().getUser(userId)
                     val profile = user.profile ?: Profile("Unknown", "None", 0, 0, emptyList())
 
                     // Save updated workout with proper user ID
                     val savedWorkout = workout.copy(userId = userId)
                     db.workoutDao().insert(savedWorkout)
+                    historyDb.workoutDao().insert(savedWorkout)
+                    Log.d("WorkoutDebug", "Workout also saved to history DB")
 
                     // ✅ Log workout info + profile name
                     Log.d("WorkoutDebug", "Workout Name: ${savedWorkout.workoutName}")
