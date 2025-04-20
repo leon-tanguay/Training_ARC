@@ -11,9 +11,10 @@
         android:id="@+id/topAppBar"
         android:layout_width="0dp"
         android:layout_height="72dp"
-        android:background="@drawable/bambootop"
+        android:background="#C7BAB9"
         android:title="Training Arc"
-        android:titleTextColor="@android:color/white"
+        android:titleTextColor="#434343"
+        android:fontFamily="@font/baskervilleregular"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
@@ -33,15 +34,32 @@
         app:layout_constraintRight_toRightOf="parent" />
 
     <!-- BOTTOM NAVIGATION -->
-    <com.google.android.material.bottomnavigation.BottomNavigationView
-        android:id="@+id/nav_view"
+    <FrameLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="?android:attr/windowBackground"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:menu="@menu/bottom_nav_menu" />
+        app:layout_constraintRight_toRightOf="parent">
+
+        <!-- Background image for the bottom nav -->
+        <ImageView
+            android:id="@+id/bottom_nav_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/bottombanner2"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            android:contentDescription="Bottom nav background" />
+
+        <!-- Bottom navigation view on top of the image -->
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:fontFamily="@font/baskervilleregular"
+            app:menu="@menu/bottom_nav_menu" />
+    </FrameLayout>
 
     <!-- QUEST BUTTON - FLOATING IN TOP RIGHT OF TOOLBAR -->
     <ImageButton

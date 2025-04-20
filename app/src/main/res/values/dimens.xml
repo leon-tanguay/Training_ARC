@@ -7,4 +7,9 @@
     <dimen name="small_font_size">12sp</dimen>
     <dimen name="level_font_size">18sp</dimen>
     <dimen name="title_icon_size">40dp</dimen>
+
+    <!-- Badge sizes -->
+    <dimen name="badge_container_size">96dp</dimen>
+    <dimen name="badge_image_padding">12dp</dimen>
+    <dimen name="badge_margin">12dp</dimen>
 </resources>
